@@ -7,11 +7,14 @@ Type Tree##nameTree
         Declare Sub printInorder()
         Declare Function doesNodeExistInBST(searchValue As datatype) As Boolean
         Declare Function getBinaryTreeHeight() As Integer
+		Declare Function getBinaryTreeSize() As Integer
         Declare Sub Insert(value As datatype)
         Declare Destructor()
     Private:
+		bstSize As Integer = 0
         nodeLeft As Tree##nameTree Ptr
         nodeRight As Tree##nameTree Ptr
+		Declare Function getSize() As Integer
         Declare Function addNodeLeft(value As datatype) As Integer
         Declare Function addNodeRight(value As datatype) As Integer
 End Type
@@ -103,6 +106,31 @@ Function Tree##nameTree.getBinaryTreeHeight() As Integer
         return rightHeight + 1
     Endif	
 End Function
+
+Function Tree##nameTree.getBinaryTreeSize() As Integer
+	Dim size As Integer = 0 
+	
+	If @this = 0 Then
+		Return -1
+	EndIf
+	
+	this.bstSize=0
+	size = this.getSize()
+	Return size-1
+End Function
+
+Function Tree##nameTree.getSize() As Integer
+	If @this = 0 Then
+		Return 1
+	Endif
+	
+	Dim a As Integer = this.nodeLeft->getSize() 'recurse on left
+	Dim b As Integer = this.nodeRight->getSize() 'recurse on right	
+	this.bstSize = a + b
+	Return this.bstSize
+
+End Function
+
 
 Sub Tree##nameTree.Insert(value As datatype)		
 		If this.nodeLeft = 0 Or this.nodeRight = 0 Then		

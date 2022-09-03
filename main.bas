@@ -3,6 +3,7 @@
 MakeTree(Double, T1)		'make a double tree, with name T1
 Dim b As Boolean			'b as boolean
 Dim height As Integer		'height as integer
+Dim size As Integer			'size of tree as integer
 Dim T As TreeT1				'Dim tree to variable T
 
 T.value = 8				'root value
@@ -39,5 +40,9 @@ Print "5.4 is found in tree ? " & b
 'get tree height
 height = T.getBinaryTreeHeight()
 Print "Binary Tree height=" & height
+
+'get tree size
+size = T.getBinaryTreeSize()
+Print "Binary Tree size = " & size
 
 Sleep

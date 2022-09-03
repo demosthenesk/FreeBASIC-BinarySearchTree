@@ -20,8 +20,6 @@ TODO:
 
 - [ ] Add DeleteValue sub
 
-- [ ] Add getSize sub
-
-
+- [x] Add getSize sub
 
 This work is under GPL3 
