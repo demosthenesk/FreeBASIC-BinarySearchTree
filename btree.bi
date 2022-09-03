@@ -1,11 +1,19 @@
 #Macro MakeTree(datatype, nameTree)
 Type Tree##nameTree
-	value As datatype
-    nodeLeft As Tree##nameTree Ptr
-    nodeRight As Tree##nameTree Ptr
-	Declare Function addNodeLeft(value As datatype) As Integer
-	Declare Function addNodeRight(value As datatype) As Integer
-	Declare Destructor()
+    Public:
+        value As datatype
+        Declare Sub printPreorder()
+        Declare Sub printPostorder()
+        Declare Sub printInorder()
+        Declare Function doesNodeExistInBST(searchValue As datatype) As Boolean
+        Declare Function getBinaryTreeHeight() As Integer
+        Declare Sub Insert(value As datatype)
+        Declare Destructor()
+    Private:
+        nodeLeft As Tree##nameTree Ptr
+        nodeRight As Tree##nameTree Ptr
+        Declare Function addNodeLeft(value As datatype) As Integer
+        Declare Function addNodeRight(value As datatype) As Integer
 End Type
 
 Destructor Tree##nameTree()
@@ -38,56 +46,56 @@ Function Tree##nameTree.addNodeRight(value As datatype) As Integer
 End Function
 
 
-Sub printPreorder(node As Tree##nameTree Ptr)
-	If node = 0 Then
+Sub Tree##nameTree.printPreorder()
+	If @this = 0 Then
 		Return
 	Endif
-	Print node->value & " " 'process node
-	printPreorder(node->nodeLeft) 'recurse on left
-	printPreorder(node->nodeRight) 'recurse on right
+	Print this.value & " " 'process node
+	this.nodeLeft->printPreorder() 'recurse on left
+	this.nodeRight->printPreorder() 'recurse on right
 End Sub
 
-Sub printPostorder(node As Tree##nameTree Ptr)
-	If node = 0 Then
+Sub Tree##nameTree.printPostorder()
+	If @this = 0 Then
 		Return
 	Endif
-	printPreorder(node->nodeLeft) 'recurse on left
-	printPreorder(node->nodeRight) 'recurse on right
-	Print node->value & " " 'process node
+	this.nodeLeft->printPreorder() 'recurse on left
+	this.nodeRight->printPreorder() 'recurse on right
+	Print this.value & " " 'process node
 End Sub
 
-Sub printInorder(node As Tree##nameTree Ptr)
-	If node = 0 Then
+Sub Tree##nameTree.printInorder()
+	If @this = 0 Then
 		Return
 	Endif
-	printPreorder(node->nodeLeft) 'recurse on left
-	Print node->value & " " 'process node
-	printPreorder(node->nodeRight) 'recurse on right	
+	this.nodeLeft->printPreorder() 'recurse on left
+	Print this.value & " " 'process node
+	this.nodeRight->printPreorder() 'recurse on right	
 End Sub
 
-Function doesNodeExistInBST(bstRoot As Tree##nameTree Ptr, searchValue As datatype) As Boolean
-    if bstRoot = 0 Then
+Function Tree##nameTree.doesNodeExistInBST(searchValue As datatype) As Boolean
+    if @this = 0 Then
         Return False
-    elseif bstRoot->value = searchValue Then
+    elseif this.value = searchValue Then
         Return True
     else
         ' if the node we're at is smaller than the value we're looking for, traverse on the right side
-        if searchValue > bstRoot->value Then
-            Return doesNodeExistInBST(bstRoot->nodeRight, searchValue)
+        if searchValue > this.value Then
+            Return this.nodeRight->doesNodeExistInBST(searchValue)
         else
             ' if the node we're at is bigger than the value we're looking for, traverse the left side
-            Return doesNodeExistInBST(bstRoot->nodeLeft, searchValue)
+            Return this.nodeLeft->doesNodeExistInBST(searchValue)
         Endif
     Endif	
 End Function
 
-Function getBinaryTreeHeight(node As Tree##nameTree Ptr) As Integer
-	If node = 0 Then
+Function Tree##nameTree.getBinaryTreeHeight() As Integer
+	If @this = 0 Then
 		Return -1
 	EndIf
 
-    Dim leftHeight As Integer = getBinaryTreeHeight(node->nodeLeft)
-    Dim rightHeight As Integer = getBinaryTreeHeight(node->nodeRight)
+    Dim leftHeight As Integer = this.nodeLeft->getBinaryTreeHeight()
+    Dim rightHeight As Integer = this.nodeRight->getBinaryTreeHeight()
 
     if leftHeight > rightHeight Then
         Return leftHeight + 1
@@ -96,25 +104,23 @@ Function getBinaryTreeHeight(node As Tree##nameTree Ptr) As Integer
     Endif	
 End Function
 
-Sub Insert(node As Tree##nameTree Ptr, value As datatype)		
-		If node->nodeLeft = 0 Or node->nodeRight = 0 Then		
-			If (value < node->value) Then
-				node->addNodeLeft(value)
+Sub Tree##nameTree.Insert(value As datatype)		
+		If this.nodeLeft = 0 Or this.nodeRight = 0 Then		
+			If (value < this.value) Then
+				this.addNodeLeft(value)
 				Return
 			Else
-				node->addNodeRight(value)
+				this.addNodeRight(value)
 				Return
 			Endif
 		EndIf
 
-		If node->nodeLeft <> 0 Or node->nodeRight <> 0 Then
-			If (value < node->value) Then
-				Insert(node->nodeLeft, value)
+		If this.nodeLeft <> 0 Or this.nodeRight <> 0 Then
+			If (value < this.value) Then
+				this.nodeLeft->Insert(value)
 			Else
-				Insert(node->nodeRight, value)
+				this.nodeRight->Insert(value)
 			Endif
 		EndIf		
 End Sub
-
-
 #Endmacro

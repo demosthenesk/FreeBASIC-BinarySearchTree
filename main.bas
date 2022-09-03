@@ -4,45 +4,40 @@ MakeTree(Double, T1)		'make a double tree, with name T1
 Dim b As Boolean			'b as boolean
 Dim height As Integer		'height as integer
 Dim T As TreeT1				'Dim tree to variable T
-Dim pT As TreeT1 Ptr		'pT a pointer to TreeT1 T
-pT = @T						'pT points to T
 
-pT->value = 8				'root value
+T.value = 8				'root value
 
 'insert values into tree
-Insert(pT, 4)
-Insert(pT, 12)
-Insert(pT, 2)
-Insert(pT, 6)
-Insert(pT, 10)
-Insert(pT, 14)
-Insert(pT, 1)
-Insert(pT, 3)
-Insert(pT, 5)
-Insert(pT, 7)
-Insert(pT, 9)
-Insert(pT, 11)
-Insert(pT, 13)
-Insert(pT, 15)
-Insert(pT, 15.4)
+T.Insert(4)
+T.Insert(12)
+T.Insert(2)
+T.Insert(6)
+T.Insert(10)
+T.Insert(14)
+T.Insert(1)
+T.Insert(3)
+T.Insert(5)
+T.Insert(7)
+T.Insert(9)
+T.Insert(11)
+T.Insert(13)
+T.Insert(15)
+T.Insert(15.4)
 
-'print tree
-'printPreorder(pT)
-printInorder(pT)
-'printPostorder(pT)
+'T.printPreorder()
+T.printInorder()
+'T.printPostorder()
 
 'search for 6
-b=doesNodeExistInBST(pT, 6)
+b=T.doesNodeExistInBST(6)
 Print "6 is found in tree ? " & b
 
 'search for 5.4
-b=doesNodeExistInBST(pT, 5.4)
+b=T.doesNodeExistInBST(5.4)
 Print "5.4 is found in tree ? " & b
 
 'get tree height
-height = getBinaryTreeHeight(pT)
+height = T.getBinaryTreeHeight()
 Print "Binary Tree height=" & height
 
-
 Sleep
-End
