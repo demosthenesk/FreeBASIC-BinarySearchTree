@@ -91,7 +91,7 @@ Function Tree##nameTree.deleteValue(value As datatype) As Boolean
     End If
     
     Dim Byref As Tree##nameTree parentNode = this.searchParentNode(value)
-    if parentNode.nodeLeft->value = value then
+    if (parentNode.nodeLeft <> 0) Andalso (parentNode.nodeLeft->value = value) then  '' <------  correction
         dim as Tree##nameTree ptr p = parentNode.nodeLeft
         parentNode.nodeLeft = p->nodeLeft
         p->nodeLeft = 0
@@ -112,7 +112,6 @@ Function Tree##nameTree.deleteValue(value As datatype) As Boolean
     end if
     return True
 End Function
-
 
 Function Tree##nameTree.addNodeLeft(value As datatype) As Integer
 	If this.nodeLeft = 0 Then
