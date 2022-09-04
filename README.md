@@ -16,10 +16,10 @@ You can:
 
 - Insert a value
 
-TODO:
+- delete a value
 
-- [x] Add DeleteValue sub
-
-- [x] Add getSize sub
+- get size of BST
 
 This work is under GPL3 
+
+Developers: fxm, demosthenesk
