@@ -8,6 +8,7 @@ Dim T As TreeT1				'Dim tree to variable T
 
 T.value = 8				'root value
 
+
 'insert values into tree
 T.Insert(4)
 T.Insert(12)
@@ -24,6 +25,19 @@ T.Insert(11)
 T.Insert(13)
 T.Insert(15)
 T.Insert(15.4)
+
+
+/'
+'insert values into tree
+T.Insert(7)
+T.Insert(6)
+T.Insert(5)
+T.Insert(4)
+T.Insert(3)
+T.Insert(2)
+T.Insert(1)
+T.Insert(0)
+'/
 
 'T.printPreorder()
 T.printInorder()
@@ -44,5 +58,17 @@ Print "Binary Tree height=" & height
 'get tree size
 size = T.getBinaryTreeSize()
 Print "Binary Tree size = " & size
+
+'delete node
+Print
+b=T.deleteValue(6)
+Print "6 is deleted in tree ? " & b
+Print
+T.printInorder()
+
+'get tree size
+size = T.getBinaryTreeSize()
+Print "Binary Tree size = " & size
+
 
 Sleep

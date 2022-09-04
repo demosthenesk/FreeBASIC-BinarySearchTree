@@ -18,7 +18,7 @@ You can:
 
 TODO:
 
-- [ ] Add DeleteValue sub
+- [x] Add DeleteValue sub
 
 - [x] Add getSize sub
 
