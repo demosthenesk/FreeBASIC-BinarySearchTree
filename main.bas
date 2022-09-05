@@ -70,5 +70,7 @@ T.printInorder()
 size = T.getBinaryTreeSize()
 Print "Binary Tree size = " & size
 
+Print
+T.printPath()
 
 Sleep

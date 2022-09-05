@@ -13,6 +13,7 @@ Type Tree##nameTree
 		Declare Function getBinaryTreeSize() As Integer
         Declare Sub Insert(value As datatype)
 		Declare Function deleteValue(value As datatype) As Boolean
+		Declare Sub printPath(path As String = "seed node")
         Declare Destructor()
     Private:
         nodeLeft As Tree##nameTree Ptr
@@ -25,6 +26,16 @@ Type Tree##nameTree
         Declare Function insertNodeLeft(node AS Tree##nameTree) As Integer
         Declare Function insertNodeRight(node AS Tree##nameTree) As Integer
 End Type
+
+Sub Tree##nameTree.printPath(path As String = "seed node")
+    If @This = 0 Then
+        Return
+    Else
+        Print This.value & " ", path
+        This.nodeLeft->printPath(path & " + L")
+        This.nodeRight->printPath(path & " + R")
+    End if	
+End Sub
 
 Destructor Tree##nameTree()
 	If this.nodeLeft <> 0 Then
