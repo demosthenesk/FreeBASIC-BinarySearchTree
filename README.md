@@ -20,7 +20,7 @@ You can:
 
 - get size of BST
 
-- visualize each node with prinPath sub
+- visualize each node with printPath sub
 
 This work is under GPL3 
 
