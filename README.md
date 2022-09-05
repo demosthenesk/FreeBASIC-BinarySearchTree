@@ -20,6 +20,8 @@ You can:
 
 - get size of BST
 
+- visualize each node with prinPath sub
+
 This work is under GPL3 
 
 Developers: fxm, demosthenesk
