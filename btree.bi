@@ -15,7 +15,6 @@ Type Tree##nameTree
 		Declare Function deleteValue(value As datatype) As Boolean
         Declare Destructor()
     Private:
-		bstSize As Integer = 0
         nodeLeft As Tree##nameTree Ptr
         nodeRight As Tree##nameTree Ptr
 		Declare Function getSize() As Integer
@@ -191,14 +190,11 @@ Function Tree##nameTree.getBinaryTreeHeight() As Integer
 End Function
 
 Function Tree##nameTree.getBinaryTreeSize() As Integer
-	Dim size As Integer = 0 
-	
 	If @this = 0 Then
 		Return -1
 	EndIf
 	
-	this.bstSize=0
-	size = this.getSize()
+	Dim size As Integer = this.getSize()
 	Return size-1
 End Function
 
@@ -209,9 +205,7 @@ Function Tree##nameTree.getSize() As Integer
 	
 	Dim a As Integer = this.nodeLeft->getSize() 'recurse on left
 	Dim b As Integer = this.nodeRight->getSize() 'recurse on right	
-	this.bstSize = a + b
-	Return this.bstSize
-
+	Return a + b
 End Function
 
 Sub Tree##nameTree.Insert(value As datatype)
