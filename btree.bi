@@ -5,20 +5,21 @@ Developers fxm, demosthenesk
 Type Tree##nameTree
     Public:
         value As datatype
-        Declare Sub printPreorder()
-        Declare Sub printPostorder()
-        Declare Sub printInorder()
-        Declare Function doesNodeExistInBST(searchValue As datatype) As Boolean
-        Declare Function getBinaryTreeHeight() As Integer
-		Declare Function getBinaryTreeSize() As Integer
-        Declare Sub Insert(value As datatype)
-		Declare Function deleteValue(value As datatype) As Boolean
-		Declare Sub printPath(path As String = "seed node")
+        Declare Sub printPreorderValues()
+        Declare Sub printPostorderValues()
+        Declare Sub printInorderValues()
+        Declare Function existValue(searchValue As datatype) As Boolean
+        Declare Function getTreeHeight() As Integer
+        Declare Function getTreeSize() As Integer
+        Declare Sub InsertValue(value As datatype)
+        Declare Function deleteValue(value As datatype) As Boolean
+        Declare Function removeSeedValue() As Boolean
+        Declare Sub printValuesPaths(path As String = "seed node")
         Declare Destructor()
     Private:
         nodeLeft As Tree##nameTree Ptr
         nodeRight As Tree##nameTree Ptr
-		Declare Function getSize() As Integer
+        Declare Function getSize() As Integer
         Declare Function addNodeLeft(value As datatype) As Integer
         Declare Function addNodeRight(value As datatype) As Integer
         Declare Function searchParentNode(value As datatype) Byref As Tree##nameTree
@@ -27,13 +28,13 @@ Type Tree##nameTree
         Declare Function insertNodeRight(node AS Tree##nameTree) As Integer
 End Type
 
-Sub Tree##nameTree.printPath(path As String = "seed node")
+Sub Tree##nameTree.printValuesPaths(path As String = "seed node")
     If @This = 0 Then
         Return
     Else
         Print This.value & " ", path
-        This.nodeLeft->printPath(path & " + L")
-        This.nodeRight->printPath(path & " + R")
+        This.nodeLeft->printValuesPaths(path & " + L")
+        This.nodeRight->printValuesPaths(path & " + R")
     End if	
 End Sub
 
@@ -96,12 +97,12 @@ Sub Tree##nameTree.insertNode(node AS Tree##nameTree)
 End Sub
 
 Function Tree##nameTree.deleteValue(value As datatype) As Boolean
-    If (this.value = value) Or (this.doesNodeExistInBST(value) = False) Then
+    If (this.value = value) Or (this.existValue(value) = False) Then
         Return False
     End If
     
     Dim Byref As Tree##nameTree parentNode = this.searchParentNode(value)
-    if (parentNode.nodeLeft <> 0) Andalso (parentNode.nodeLeft->value = value) then  '' <------  correction
+    if (parentNode.nodeLeft <> 0) Andalso (parentNode.nodeLeft->value = value) then
         dim as Tree##nameTree ptr p = parentNode.nodeLeft
         parentNode.nodeLeft = p->nodeLeft
         p->nodeLeft = 0
@@ -120,6 +121,44 @@ Function Tree##nameTree.deleteValue(value As datatype) As Boolean
         end if
         Delete p
     end if
+    return True
+End Function
+
+Function Tree##nameTree.removeSeedValue() As Boolean
+    if (this.nodeLeft = 0) And (this.nodeRight = 0) then
+        return False
+    end if
+    
+    dim as Tree##nameTree ptr p
+    if this.nodeRight <> 0 then
+        p = this.nodeRight
+        while p->nodeLeft <> 0
+            p = p->nodeLeft
+        wend
+    else
+        p = this.nodeLeft
+        while p->nodeRight <> 0
+            p = p->nodeRight
+        wend
+    end if
+    
+    dim byref as Tree##nameTree parentNode = this.searchParentNode(p->value)
+    if parentNode.nodeLeft->value = p->value then
+        parentNode.nodeLeft = 0
+    else
+        parentNode.nodeRight = 0
+    end if
+    
+    this.value = p->value
+    if p->nodeLeft <> 0 then
+        this.insertNode(*p->nodeLeft)
+        p->nodeLeft = 0
+    end if
+    if p->nodeRight <> 0 then
+        this.insertNode(*p->nodeRight)
+        p->nodeRight = 0
+    end if
+    delete p
     return True
 End Function
 
@@ -142,34 +181,34 @@ Function Tree##nameTree.addNodeRight(value As datatype) As Integer
 End Function
 
 
-Sub Tree##nameTree.printPreorder()
+Sub Tree##nameTree.printPreorderValues()
 	If @this = 0 Then
 		Return
 	Endif
 	Print this.value & " " 'process node
-	this.nodeLeft->printPreorder() 'recurse on left
-	this.nodeRight->printPreorder() 'recurse on right
+	this.nodeLeft->printPreorderValues() 'recurse on left
+	this.nodeRight->printPreorderValues() 'recurse on right
 End Sub
 
-Sub Tree##nameTree.printPostorder()
+Sub Tree##nameTree.printPostorderValues()
 	If @this = 0 Then
 		Return
 	Endif
-	this.nodeLeft->printPreorder() 'recurse on left
-	this.nodeRight->printPreorder() 'recurse on right
+	this.nodeLeft->printPreorderValues() 'recurse on left
+	this.nodeRight->printPreorderValues() 'recurse on right
 	Print this.value & " " 'process node
 End Sub
 
-Sub Tree##nameTree.printInorder()
+Sub Tree##nameTree.printInorderValues()
 	If @this = 0 Then
 		Return
 	Endif
-	this.nodeLeft->printPreorder() 'recurse on left
+	this.nodeLeft->printPreorderValues() 'recurse on left
 	Print this.value & " " 'process node
-	this.nodeRight->printPreorder() 'recurse on right	
+	this.nodeRight->printPreorderValues() 'recurse on right	
 End Sub
 
-Function Tree##nameTree.doesNodeExistInBST(searchValue As datatype) As Boolean
+Function Tree##nameTree.existValue(searchValue As datatype) As Boolean
     if @this = 0 Then
         Return False
     elseif this.value = searchValue Then
@@ -177,21 +216,21 @@ Function Tree##nameTree.doesNodeExistInBST(searchValue As datatype) As Boolean
     else
         ' if the node we're at is smaller than the value we're looking for, traverse on the right side
         if searchValue > this.value Then
-            Return this.nodeRight->doesNodeExistInBST(searchValue)
+            Return this.nodeRight->existValue(searchValue)
         else
             ' if the node we're at is bigger than the value we're looking for, traverse the left side
-            Return this.nodeLeft->doesNodeExistInBST(searchValue)
+            Return this.nodeLeft->existValue(searchValue)
         Endif
     Endif	
 End Function
 
-Function Tree##nameTree.getBinaryTreeHeight() As Integer
+Function Tree##nameTree.getTreeHeight() As Integer
 	If @this = 0 Then
 		Return -1
 	EndIf
 
-    Dim leftHeight As Integer = this.nodeLeft->getBinaryTreeHeight()
-    Dim rightHeight As Integer = this.nodeRight->getBinaryTreeHeight()
+    Dim leftHeight As Integer = this.nodeLeft->getTreeHeight()
+    Dim rightHeight As Integer = this.nodeRight->getTreeHeight()
 
     if leftHeight > rightHeight Then
         Return leftHeight + 1
@@ -200,7 +239,7 @@ Function Tree##nameTree.getBinaryTreeHeight() As Integer
     Endif	
 End Function
 
-Function Tree##nameTree.getBinaryTreeSize() As Integer
+Function Tree##nameTree.getTreeSize() As Integer
 	If @this = 0 Then
 		Return -1
 	EndIf
@@ -219,18 +258,18 @@ Function Tree##nameTree.getSize() As Integer
 	Return a + b
 End Function
 
-Sub Tree##nameTree.Insert(value As datatype)
+Sub Tree##nameTree.InsertValue(value As datatype)
     If (value < this.value) Then
         If this.addNodeLeft(value) = 0 Then
             Return
         Else
-            this.nodeLeft->Insert(value)
+            this.nodeLeft->InsertValue(value)
         End If
     Else
         If this.addNodeRight(value) = 0 Then
             Return
         Else
-            this.nodeRight->Insert(value)
+            this.nodeRight->InsertValue(value)
         End If
     End If    
 End Sub
