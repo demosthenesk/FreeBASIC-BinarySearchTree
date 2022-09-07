@@ -15,6 +15,7 @@ Type Tree##nameTree
         Declare Function deleteValue(value As datatype) As Boolean
         Declare Function removeSeedValue() As Boolean
         Declare Sub printValuesPaths(path As String = "seed node")
+        Declare Constructor()
         Declare Destructor()
     Private:
         nodeLeft As Tree##nameTree Ptr
@@ -26,7 +27,12 @@ Type Tree##nameTree
         Declare Sub insertNode(node AS Tree##nameTree)
         Declare Function insertNodeLeft(node AS Tree##nameTree) As Integer
         Declare Function insertNodeRight(node AS Tree##nameTree) As Integer
+        Declare Constructor(node AS Tree##nameTree)
+        Declare Operator Let(node AS Tree##nameTree)
 End Type
+
+Constructor Tree##nameTree()
+End Constructor
 
 Sub Tree##nameTree.printValuesPaths(path As String = "seed node")
     If @This = 0 Then
