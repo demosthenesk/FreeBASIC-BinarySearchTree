@@ -84,6 +84,12 @@ Print "old seed value is reinserted into tree"
 Print
 pT->printValuesPaths()
 
+Print
+Print "11 is found in path = " & pT->getValuePath(11)
+
+Print
+Print "5.4 is found in path = " & pT->getValuePath(5.4)
+
 Delete pT  'delete the full tree
 
 Sleep

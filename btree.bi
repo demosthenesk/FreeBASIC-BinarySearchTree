@@ -10,10 +10,11 @@ Type Tree##nameTree
         Declare Function existValue(value As datatype) As Boolean
         Declare Function getTreeHeight() As Integer
         Declare Function getTreeSize() As Integer
+        Declare Function getValuePath(value As datatype, rootTitle As String = "seed node") As String
         Declare Sub insertValue(value As datatype)
         Declare Function deleteValue(value As datatype) As Boolean
         Declare Function removeSeedValue() As Boolean
-        Declare Sub printValuesPaths(path As String = "seed node")
+        Declare Sub printValuesPaths(rootTitle As String = "seed node")
         Declare Constructor(value As datatype)
         Declare Destructor()
     Private:
@@ -36,13 +37,13 @@ Constructor Tree##nameTree(value As datatype)
     This.value = value
 End Constructor
 
-Sub Tree##nameTree.printValuesPaths(path As String = "seed node")
+Sub Tree##nameTree.printValuesPaths(rootTitle As String = "seed node")
     If @This = 0 Then
         Return
     Else
-        Print This.value & " ", path
-        This.nodeLeft->printValuesPaths(path & " + L")
-        This.nodeRight->printValuesPaths(path & " + R")
+        Print This.value & " ", rootTitle
+        This.nodeLeft->printValuesPaths(rootTitle & " + L")
+        This.nodeRight->printValuesPaths(rootTitle & " + R")
     End If	
 End Sub
 
@@ -261,6 +262,22 @@ Function Tree##nameTree.getSize() As Integer
     Dim a As Integer = This.nodeLeft->getSize() 'recurse on left
     Dim b As Integer = This.nodeRight->getSize() 'recurse on right	
     Return a + b
+End Function
+
+Function Tree##nameTree.getValuePath(value As datatype, rootTitle As String = "seed node") As String
+    If @This = 0 Then
+        Return "no path"
+    Elseif This.value = value Then
+        Return rootTitle
+    Else
+        ' if the node we're at is smaller than the value we're looking for, traverse on the right side
+        If value > This.value Then
+            Return This.nodeRight->getValuePath(value, rootTitle & " + R")
+        Else
+            ' if the node we're at is bigger than the value we're looking for, traverse the left side
+            Return This.nodeLeft->getValuePath(value, rootTitle & " + L")
+        End If
+    End If	
 End Function
 
 Sub Tree##nameTree.insertValue(value As datatype)
