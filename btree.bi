@@ -15,6 +15,7 @@ Type Tree##nameTree
         Declare Function deleteValue(value As datatype) As Boolean
         Declare Function removeSeedValue() As Boolean
         Declare Sub printValuesPaths(rootTitle As String = "seed node")
+        Declare Function getNearestNeighbour(value As datatype) As datatype
         Declare Constructor(value As datatype)
         Declare Destructor()
     Private:
@@ -295,4 +296,37 @@ Sub Tree##nameTree.insertValue(value As datatype)
         End If
     End If    
 End Sub
+
+Function Tree##nameTree.getNearestNeighbour(value As datatype) As datatype
+    Static As Integer n
+    Static As Tree##nameTree Ptr p
+    If p <> 0 Then
+        If Abs(value - This.value) < Abs(value - p->value) Then
+            p = @This
+        End If
+    Else
+        p = @This
+    End If
+    
+    If (value < This.value) Then
+        If This.nodeLeft <> 0 Then
+            n+= 1
+            This.nodeLeft->getNearestNeighbour(value)
+        End If
+    Else
+        If This.nodeRight <> 0 Then
+            n += 1
+            This.nodeRight->getNearestNeighbour(value)
+        End If
+    End If
+    
+    Dim As datatype d
+    If n = 0 Then
+        d = p->value
+        p = 0
+    Else
+        n -= 1
+    End If
+    Return d
+End Function
 #Endmacro

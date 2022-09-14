@@ -90,6 +90,12 @@ Print "11 is found in path = " & pT->getValuePath(11)
 Print
 Print "5.4 is found in path = " & pT->getValuePath(5.4)
 
+Print
+Print "11 has nearest neighbor = " & pT->getNearestNeighbour(11)
+
+Print
+Print "5.4 has nearest neighbor = " & pT->getNearestNeighbour(5.4)
+
 Delete pT  'delete the full tree
 
 Sleep
