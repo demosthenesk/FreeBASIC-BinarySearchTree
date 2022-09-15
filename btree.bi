@@ -50,15 +50,12 @@ End Sub
 
 Destructor Tree##nameTree()
     If This.nodeLeft <> 0 Then
-        This.value = 0
         Delete This.nodeLeft
     End If
     If This.nodeRight <> 0 Then
-        This.value = 0
         Delete This.nodeRight
     End If
 End Destructor
-
 
 Function Tree##nameTree.insertNodeLeft(node AS Tree##nameTree) As Integer
     If This.nodeLeft = 0 Then
@@ -298,35 +295,25 @@ Sub Tree##nameTree.insertValue(value As datatype)
 End Sub
 
 Function Tree##nameTree.getNearestNeighbour(value As datatype) As datatype
-    Static As Integer n
     Static As Tree##nameTree Ptr p
-    If p <> 0 Then
-        If Abs(value - This.value) < Abs(value - p->value) Then
+    If @This = 0 Then
+        Dim As Tree##nameTree Ptr p0
+        p0 = p
+        p = 0
+        Return p0->value
+    Else
+        If p <> 0 Then
+            If Abs(value - This.value) < Abs(value - p->value) Then
+                p = @This
+            End If
+        Else
             p = @This
         End If
-    Else
-        p = @This
-    End If
-    
-    If (value < This.value) Then
-        If This.nodeLeft <> 0 Then
-            n+= 1
-            This.nodeLeft->getNearestNeighbour(value)
-        End If
-    Else
-        If This.nodeRight <> 0 Then
-            n += 1
-            This.nodeRight->getNearestNeighbour(value)
+        If (value < This.value) Then
+            Return This.nodeLeft->getNearestNeighbour(value)
+        Else
+            Return This.nodeRight->getNearestNeighbour(value)
         End If
     End If
-    
-    Dim As datatype d
-    If n = 0 Then
-        d = p->value
-        p = 0
-    Else
-        n -= 1
-    End If
-    Return d
 End Function
 #Endmacro
